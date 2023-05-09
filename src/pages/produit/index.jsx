@@ -15,16 +15,11 @@ export default function produit({products}) {
 
   return (
     <>
-      <header>
-        <h1 className="text-center text-3xl text-green-600 font-bold py-5">
-          MERCADONA
-        </h1>
-      </header>
       <main>
-        <section className="container max-w-5xl">
+        <section>
           <div className="flex justify-between">
             <h2 className="font-bold text-3xl">Gestion des produits</h2>
-            <a href='#' className="bg-green-600 text-white text-sm rounded self-center px-3 py-1">Ajouter</a>
+            <Link href='/produit/ajouter' className="bg-green-600 text-white text-sm rounded self-center px-3 py-1">Ajouter</Link>
           </div>
           <ListData allData={products}/>
         </section>
