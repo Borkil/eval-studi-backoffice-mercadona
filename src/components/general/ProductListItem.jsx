@@ -1,6 +1,8 @@
 import DealTag from "./tag/DealTag.jsx";
 import SaleTag from "./tag/SaleTag.jsx";
 import ArchiveTag from "./tag/ArchiveTag.jsx";
+import ListItemDealPriceDetail from "./ListItemDealPriceDetail.jsx";
+import Price from "./Price.jsx";
 
 export default function ProductListItem({ product }) {
   return (
@@ -20,7 +22,11 @@ export default function ProductListItem({ product }) {
         </div>
         <div className="flex  ">
           <div className="me-4 text-neutral-400">{product.description}</div>
-          <div className="text-neutral-600">{product.price} €</div>
+          {product.isDeal ? (
+            <ListItemDealPriceDetail product={product} />
+          ) : (
+            <Price product={product} />
+          )}
         </div>
       </div>
       <div className="bg-neutral-400">
