@@ -25,7 +25,7 @@ export default function ProductListItem({ product }) {
           {product.isDeal ? (
             <ListItemDealPriceDetail product={product} />
           ) : (
-            <Price product={product} />
+            <Price> {product.price} </Price>
           )}
         </div>
       </div>
