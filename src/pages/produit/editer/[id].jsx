@@ -3,6 +3,8 @@ import InputFloat from "@/components/general/form/InputFloat.jsx";
 import InputList from "@/components/general/form/InputList.jsx";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
+import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
+import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
 export async function getStaticProps({params}) {
   const {id} = params
@@ -72,6 +74,7 @@ export default function Editer({product, categories}) {
   return (
     <section>
       <h1>Ajouter un nouveau produit</h1>
+      {flash}
       <form onSubmit={handleSubmit}>
         <InputText name="label" value={product.label}>Label du produit</InputText>
         <InputText name="description" value={product.description}>Description du produit</InputText>
