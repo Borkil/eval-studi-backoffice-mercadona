@@ -2,6 +2,7 @@ import InputText from "@/components/general/form/InputText.jsx";
 import InputFloat from "@/components/general/form/InputFloat.jsx";
 import InputList from "@/components/general/form/InputList.jsx";
 import { useRouter } from 'next/navigation';
+import { useState } from "react";
 
 export async function getStaticProps({params}) {
   const {id} = params
@@ -30,6 +31,12 @@ export async function getStaticPaths(){
 export default function Editer({product, categories}) {
   const router = useRouter()
 
+  const [flash, setFlash] = useState([])
+
+  const addFlash = (message) => {
+    setFlash([message])
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = {
@@ -52,7 +59,9 @@ export default function Editer({product, categories}) {
     
     const response = await fetch(endpoint, options);
     if(response.ok){
-      router.push('/produit')
+      addFlash(<SuccessFlashMessage key='i'>Le produit a été mis à jour avec succes !</SuccessFlashMessage>)
+    }else{
+      addFlash(<DangerFlashMessage key='i'>Il y a un probleme pour la mise à jour du produit</DangerFlashMessage>)
     }
     
   };
