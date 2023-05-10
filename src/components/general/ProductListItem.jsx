@@ -33,7 +33,8 @@ export default function ProductListItem({ product }) {
         </div>
       </div>  
       <div className="bg-neutral-400">
-        <Link href={`/produit/promotion/${product.id}`}>add promo</Link>
+        {product.isDeal ? <Link href={`/produit/promotion/delete/${product.id}`}>Remove Deal</Link> : <Link href={`/produit/promotion/${product.id}`}>add promo</Link> }
+        
         <Link href={`/produit/editer/${product.id}`}>Editer</Link>
       </div>
     </li>
