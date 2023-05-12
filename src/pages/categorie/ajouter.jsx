@@ -3,7 +3,7 @@ import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
-export default function ajouter() {
+export default function AddCategory() {
   const [flash, setFlash] = useState([]);
 
   const addFlash = (message) => {

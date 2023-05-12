@@ -6,19 +6,7 @@ import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
-
-export async function getStaticProps() {
-  const res = await fetch('http://api-mercadona.test/api/category');
-  const categories =  await res.json();
-   return {
-    props: {
-      categories,
-    }
-   }
-}
-
-
-export default function ajouter({categories}) {
+export default function NewProduct({categories}) {
   const router = useRouter()
 
   const [flash, setFlash] = useState([])
@@ -75,4 +63,14 @@ export default function ajouter({categories}) {
 
     </section>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await fetch('http://api-mercadona.test/api/category');
+  const categories =  await res.json();
+   return {
+    props: {
+      categories,
+    }
+   }
 }

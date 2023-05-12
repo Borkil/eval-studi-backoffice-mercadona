@@ -3,7 +3,7 @@ import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
-export default function editer({category}) {
+export default function EditCategory({category}) {
   const [flash, setFlash] = useState([]);
 
   const addFlash = (message) => {
@@ -52,22 +52,12 @@ export default function editer({category}) {
   );
 }
 
-export async function getStaticProps({params}) {
-  const {id} = params
-  const res = await fetch(`http://api-mercadona.test/api/category/64`);
+export async function getServerSideProps({params}) {
+  const res = await fetch(`http://api-mercadona.test/api/category/${params.id}`);
   const category = await res.json()
    return {
     props: {
       category
     }
    }
-}
-
-export async function getStaticPaths(){
-  const res = await fetch('http://api-mercadona.test/api/category')
-  const categories = await res.json()
-  const paths = categories.map(category => (
-    { params: {id: category.id.toString()}}))
-
-  return { paths, fallback: false}
 }

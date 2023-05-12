@@ -19,7 +19,7 @@ export default function index({ categories }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const res = await fetch("http://api-mercadona.test/api/category");
   const categories = await res.json();
 

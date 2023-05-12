@@ -5,7 +5,7 @@ import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
-export default function Editer({ product }) {
+export default function EditDealProduct({ product }) {
   const router = useRouter();
 
   const [flash, setFlash] = useState([]);
@@ -65,26 +65,14 @@ export default function Editer({ product }) {
   );
 }
 
-
-export async function getStaticProps({ params }) {
-  const { id } = params;
-  const res1 = await fetch(`http://api-mercadona.test/api/product/${id}`);
+export async function getServerSideProps({ params }) {
+  const res1 = await fetch(`http://api-mercadona.test/api/product/${params.id}`);
   const product = await res1.json();
   return {
     props: {
       product,
     },
   };
-}
-
-export async function getStaticPaths() {
-  const res = await fetch("http://api-mercadona.test/api/product");
-  const products = await res.json();
-  const paths = products.map((product) => ({
-    params: { id: product.id.toString() },
-  }));
-
-  return { paths, fallback: false };
 }
 
 function reducePrice(price, percent){

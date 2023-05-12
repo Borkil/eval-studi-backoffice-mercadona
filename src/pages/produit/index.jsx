@@ -1,16 +1,6 @@
 import ListData from "@/components/general/ListData.jsx";
 import Link from "next/link.js";
 
-export async function getStaticProps() {
-  const res = await fetch('http://api-mercadona.test/api/product');
-  const products =  await res.json();
-   return {
-    props: {
-      products,
-    }
-   }
-}
-
 export default function produit({products}) {
 
   return (
@@ -26,4 +16,14 @@ export default function produit({products}) {
       </main>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await fetch('http://api-mercadona.test/api/product');
+  const products =  await res.json();
+   return {
+    props: {
+      products,
+    }
+   }
 }
