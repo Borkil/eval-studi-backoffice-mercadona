@@ -25,6 +25,7 @@ export default function EditDealProduct({ product }) {
       label: product.label,
       description : product.description,
       price: product.price,
+      category: product.category,
       finishDealAt: event.target.finishDealAt.value,
       percentage: parseInt(event.target.percentage.value),
       priceDeal: parseFloat(event.target.priceDeal.value),
@@ -32,9 +33,10 @@ export default function EditDealProduct({ product }) {
       isArchive: false
     };
     const JSONdata = JSON.stringify(data);
-    console.log(data, JSONdata);
+    
+    const endpoint = process.env.NEXT_PUBLIC_URL_API + "/product/" + product.id;
 
-    const endpoint = `http://api-mercadona.test/api/product/${product.id}`;
+    console.log(endpoint)
 
     const options = {
       method: "PUT",
@@ -66,7 +68,7 @@ export default function EditDealProduct({ product }) {
 }
 
 export async function getServerSideProps({ params }) {
-  const res1 = await fetch(`http://api-mercadona.test/api/product/${params.id}`);
+  const res1 = await fetch(process.env.NEXT_PUBLIC_URL_API + "/product/" + params.id);
   const product = await res1.json();
   return {
     props: {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
-export default function EditCategory({category}) {
+export default function EditCategory({ category }) {
   const [flash, setFlash] = useState([]);
 
   const addFlash = (message) => {
@@ -17,7 +17,7 @@ export default function EditCategory({category}) {
     };
     const JSONdata = JSON.stringify(data);
 
-    const endpoint = `http://api-mercadona.test/api/category/${category.id}`;
+    const endpoint = process.env.NEXT_PUBLIC_URL_API + "/category/" + category.id;
 
     const options = {
       method: "PUT",
@@ -45,19 +45,21 @@ export default function EditCategory({category}) {
       <h1>Mettre a jour la catégorie</h1>
       {flash}
       <form onSubmit={handleSubmit}>
-        <InputText name="label" value={category.label} required={true}>Label de la catégorie</InputText>
-        <input type="submit" value="Ajouter"  />
+        <InputText name="label" value={category.label} required={true}>
+          Label de la catégorie
+        </InputText>
+        <input type="submit" value="Ajouter" />
       </form>
     </section>
   );
 }
 
-export async function getServerSideProps({params}) {
-  const res = await fetch(`http://api-mercadona.test/api/category/${params.id}`);
-  const category = await res.json()
-   return {
+export async function getServerSideProps({ params }) {
+  const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/category/" + params.id);
+  const category = await res.json();
+  return {
     props: {
-      category
-    }
-   }
+      category,
+    },
+  };
 }

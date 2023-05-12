@@ -19,7 +19,7 @@ export default function produit({products}) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch('http://api-mercadona.test/api/product');
+  const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/product");
   const products =  await res.json();
    return {
     props: {

@@ -12,7 +12,7 @@ export const authOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        const res = await fetch("http://api-mercadona.test/api/login", {
+        const res = await fetch(process.env.URL_API + "/login" , {
           method: 'POST',
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" }

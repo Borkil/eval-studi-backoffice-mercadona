@@ -26,10 +26,10 @@ export default function NewProduct({categories}) {
       isArchive: false,
     };
     const JSONdata = JSON.stringify(data);
-    console.log(data, JSONdata);
-    
-    const endpoint = "http://api-mercadona.test/api/product";
-    
+    const endpoint = process.env.NEXT_PUBLIC_URL_API + "/product"
+    console.log(endpoint)  
+
+
     const options = {
       method: "POST",
       body: JSONdata,
@@ -66,7 +66,7 @@ export default function NewProduct({categories}) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch('http://api-mercadona.test/api/category');
+  const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/category");
   const categories =  await res.json();
    return {
     props: {

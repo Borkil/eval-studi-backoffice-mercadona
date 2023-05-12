@@ -17,7 +17,7 @@ export default function AddCategory() {
     };
     const JSONdata = JSON.stringify(data);
 
-    const endpoint = "http://api-mercadona.test/api/category";
+    const endpoint = process.env.NEXT_PUBLIC_URL_API + "/category";
 
     const options = {
       method: "POST",
