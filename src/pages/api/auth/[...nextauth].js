@@ -12,11 +12,13 @@ export const authOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/login" , {
+        const res = await fetch("https://api-mercadona.herokuapp.com/login",
+        {
           method: 'POST',
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" }
         })
+
         const user = await res.json()
         if (res.ok && user) {
           return user
