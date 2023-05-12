@@ -8,11 +8,11 @@ export const authOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" }
+        username: { label: "username", type: "text", placeholder: "jsmith" },
+        password: { label: "password", type: "password" }
       },
       async authorize(credentials, req) {
-        const res = await fetch("https://api-mercadona.herokuapp.com/login",
+        const res = await fetch("https://api-mercadona.herokuapp.com/api/login_check",
         {
           method: 'POST',
           body: JSON.stringify(credentials),
