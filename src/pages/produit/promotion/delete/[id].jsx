@@ -1,7 +1,9 @@
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function DeleteDeal({ product }) {
   const router = useRouter();
+  const { data: session, status } = useSession()
 
   const handleSubmit = async () => {
 
@@ -23,6 +25,9 @@ export default function DeleteDeal({ product }) {
     const options = {
       method: "PUT",
       body: JSONdata,
+      headers: {
+        Authorization : `Bearer ${session.user.token} `
+      }
     };
 
     const response = await fetch(endpoint, options);

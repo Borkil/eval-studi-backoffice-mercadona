@@ -1,15 +1,14 @@
 import InputNumber from "@/components/general/form/InputNumber.jsx";
 import InputDate from "@/components/general/form/InputDate.jsx";
-import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
 export default function EditDealProduct({ product }) {
-  const router = useRouter();
-
   const [flash, setFlash] = useState([]);
   const [dealPrice, setDealPrice] = useState()
+  const { data: session, status } = useSession()
 
   const calculDealPrice = (price, percent) => {
     setDealPrice(reducePrice(price, percent))
@@ -41,6 +40,9 @@ export default function EditDealProduct({ product }) {
     const options = {
       method: "PUT",
       body: JSONdata,
+      headers: {
+        Authorization : `Bearer ${session.user.token} `
+      }
     };
 
     const response = await fetch(endpoint, options);

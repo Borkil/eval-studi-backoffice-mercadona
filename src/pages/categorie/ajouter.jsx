@@ -1,10 +1,12 @@
 import InputText from "@/components/general/form/InputText.jsx";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
 export default function AddCategory() {
   const [flash, setFlash] = useState([]);
+  const { data: session, status } = useSession()
 
   const addFlash = (message) => {
     setFlash([message]);
@@ -22,6 +24,9 @@ export default function AddCategory() {
     const options = {
       method: "POST",
       body: JSONdata,
+      headers: {
+        Authorization : `Bearer ${session.user.token} `
+      }
     };
 
     const response = await fetch(endpoint, options);

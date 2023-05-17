@@ -1,14 +1,14 @@
 import InputText from "@/components/general/form/InputText.jsx";
 import InputFloat from "@/components/general/form/InputFloat.jsx";
 import InputList from "@/components/general/form/InputList.jsx";
-import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
 export default function EditProduct({ product, categories }) {
-  const router = useRouter();
-
+  
+  const { data: session, status } = useSession()
   const [flash, setFlash] = useState([]);
 
   const addFlash = (message) => {
@@ -33,6 +33,9 @@ export default function EditProduct({ product, categories }) {
     const options = {
       method: "PUT",
       body: JSONdata,
+      headers: {
+        Authorization : `Bearer ${session.user.token} `
+      }
     };
 
     const response = await fetch(endpoint, options);

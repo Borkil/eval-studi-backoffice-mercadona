@@ -6,14 +6,10 @@ import { useSession } from "next-auth/react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
-
-
-
-
 export default function NewProduct({categories, context}) {
   const [flash, setFlash] = useState([])
   const { data: session, status } = useSession()
-console.log(`Bearer ${session.user.token} `)
+
 
   const addFlash = (message) => {
     setFlash([message])
@@ -32,7 +28,7 @@ console.log(`Bearer ${session.user.token} `)
 
     
     const JSONdata = JSON.stringify(data);
-    const endpoint = process.env.NEXT_PUBLIC_URL_API + "/product/create"
+    const endpoint = process.env.NEXT_PUBLIC_URL_API + "/product"
 
 
     const options = {
