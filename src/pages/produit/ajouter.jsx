@@ -1,16 +1,20 @@
 import InputText from "@/components/general/form/InputText.jsx";
 import InputFloat from "@/components/general/form/InputFloat.jsx";
 import InputList from "@/components/general/form/InputList.jsx";
-import { useRouter } from 'next/navigation';
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 
-export default function NewProduct({categories}) {
-  const router = useRouter()
 
+
+
+
+export default function NewProduct({categories, context}) {
   const [flash, setFlash] = useState([])
- 
+  const { data: session, status } = useSession()
+console.log(`Bearer ${session.user.token} `)
+
   const addFlash = (message) => {
     setFlash([message])
   }
@@ -25,14 +29,18 @@ export default function NewProduct({categories}) {
       isDeal: false,
       isArchive: false,
     };
+
+    
     const JSONdata = JSON.stringify(data);
-    const endpoint = process.env.NEXT_PUBLIC_URL_API + "/product"
-    console.log(endpoint)  
+    const endpoint = process.env.NEXT_PUBLIC_URL_API + "/product/create"
 
 
     const options = {
       method: "POST",
       body: JSONdata,
+      headers: {
+        Authorization : `Bearer ${session.user.token} `
+      }
     };
     
     const response = await fetch(endpoint, options);
@@ -68,9 +76,11 @@ export default function NewProduct({categories}) {
 export async function getServerSideProps() {
   const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/category");
   const categories =  await res.json();
+
    return {
     props: {
       categories,
     }
    }
 }
+

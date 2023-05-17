@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 
+
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -27,6 +28,16 @@ export const authOptions = {
       }
     })
   ],
-  session: { strategy: "jwt" },
+  session: { jwt: true },
+  callbacks: {
+    async jwt({ token, user }) {
+      return {...token, ...user}
+    },
+    async session({session, token, user} ) {
+      session.user = token
+      return session
+    }
+  },
+  
 }
 export default NextAuth(authOptions)
