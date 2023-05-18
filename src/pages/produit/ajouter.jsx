@@ -5,10 +5,15 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "@/firebase/firebase.config.js";
 
 export default function NewProduct({categories, context}) {
   const [flash, setFlash] = useState([])
   const { data: session, status } = useSession()
+  const app = initializeApp(firebaseConfig);
+  const storage = getStorage();
 
 
   const addFlash = (message) => {
@@ -17,10 +22,14 @@ export default function NewProduct({categories, context}) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const file = event.target.image.files[0]
+    const storageRef = ref(storage, `images/${file.name}`);
+
     const data = {
       label: event.target.label.value,
       description: event.target.description.value,
       price: parseFloat(event.target.price.value),
+      image: file.name,
       category: {label: event.target.category.value},
       isDeal: false,
       isArchive: false,
@@ -41,7 +50,9 @@ export default function NewProduct({categories, context}) {
     
     const response = await fetch(endpoint, options);
     if(response.ok){
-      addFlash(<SuccessFlashMessage key='i'>Le produit a été créer avec succes !</SuccessFlashMessage>)
+      uploadBytes(storageRef, file).then((snapshot) => {
+        addFlash(<SuccessFlashMessage key='i'>Le produit a été créer avec succes !</SuccessFlashMessage>)
+      });
     }else{
       addFlash(<DangerFlashMessage key='i'>Il y a un probleme pour la creation du produit</DangerFlashMessage>)
     }
@@ -62,6 +73,7 @@ export default function NewProduct({categories, context}) {
         <InputText name="description">Description du produit</InputText>
         <InputFloat name="price">Prix</InputFloat>
         <InputList name='category' list={categoryList} >Choisir une catégorie</InputList>
+        <input type="file" name="image" id="imageFile" />
         <button type="submit">Submit</button>
       </form>
 

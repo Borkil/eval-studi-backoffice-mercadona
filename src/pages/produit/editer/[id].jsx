@@ -5,22 +5,59 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "@/firebase/firebase.config.js";
+import Image from "next/image.js";
 
 export default function EditProduct({ product, categories }) {
-  
-  const { data: session, status } = useSession()
-  const [flash, setFlash] = useState([]);
+  // Récuperation de l'image
+  const app = initializeApp(firebaseConfig);
+  const storage = getStorage();
 
+  //State
+  const [url, setUrl] = useState()
+  const [flash, setFlash] = useState([]);
+  const [imageRef, setImageRef] = useState()
+
+  const image = []
+
+  if(product.image){
+
+    getDownloadURL(ref(storage, `images/${product.image}`))
+      .then((url)=>{
+          setUrl(url)
+      })
+  }else{
+    image.push(<p>Le produit n'a pas d'image, enregistrer en une.</p>)
+  }
+  
+  if(url){
+    image.push(<Image src={url} width={100} height={100} alt="product pictures" key='image1' priority/>)
+  }
+  
+
+
+  // Récuperation de la session
+  const { data: session, status } = useSession()
+  
+  // Gestion des messages Flash
+  
   const addFlash = (message) => {
     setFlash([message]);
   };
 
+  // submit le formulaire
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const file = event.target.image.files[0]
+    const storageRef = ref(storage, `images/${file.name}`);
+
     const data = {
       label: event.target.label.value,
       description: event.target.description.value,
       price: parseFloat(event.target.price.value),
+      image: file.name,
       category: { label: event.target.category.value },
       isDeal: false,
       isArchive: false,
@@ -40,11 +77,9 @@ export default function EditProduct({ product, categories }) {
 
     const response = await fetch(endpoint, options);
     if (response.ok) {
-      addFlash(
-        <SuccessFlashMessage key="i">
-          Le produit a été mis à jour avec succes !
-        </SuccessFlashMessage>
-      );
+      uploadBytes(storageRef, file).then((snapshot) => {
+        addFlash(<SuccessFlashMessage key='i'>Le produit a été créer avec succes !</SuccessFlashMessage>)
+      });
     } else {
       addFlash(
         <DangerFlashMessage key="i">
@@ -54,6 +89,7 @@ export default function EditProduct({ product, categories }) {
     }
   };
 
+  // Creation de la liste de categorie pour l'input list du formulaire
   const categoryList = [];
   categories.forEach((element) => categoryList.push(element.label));
 
@@ -61,6 +97,7 @@ export default function EditProduct({ product, categories }) {
     <section>
       <h1>Ajouter un nouveau produit</h1>
       {flash}
+      {image}
       <form onSubmit={handleSubmit}>
         <InputText name="label" value={product.label}>
           Label du produit
@@ -78,6 +115,9 @@ export default function EditProduct({ product, categories }) {
         >
           Choisir une catégorie
         </InputList>
+
+        <input type="file" name="image" id="inputImage" />
+
         <button type="submit">Submit</button>
       </form>
     </section>
