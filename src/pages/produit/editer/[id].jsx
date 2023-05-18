@@ -13,13 +13,13 @@ import Image from "next/image.js";
 export default function EditProduct({ product, categories }) {
   // Récuperation de l'image
   const app = initializeApp(firebaseConfig);
-  const storage = getStorage(app);
+  const storage = getStorage();
 
   //State
   const [url, setUrl] = useState()
   const [flash, setFlash] = useState([]);
   const [imageRef, setImageRef] = useState()
-  console.log(url)
+
   const image = []
 
   if(product.image){

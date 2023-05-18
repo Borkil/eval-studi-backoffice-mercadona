@@ -24,7 +24,7 @@ export default function NewProduct({categories, context}) {
     event.preventDefault();
     const file = event.target.image.files[0]
     const storageRef = ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${file.name}`);
-    console.log(file, storageRef)
+
 
     const data = {
       label: event.target.label.value,
