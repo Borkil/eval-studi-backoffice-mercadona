@@ -13,17 +13,16 @@ import Image from "next/image.js";
 export default function EditProduct({ product, categories }) {
   // Récuperation de l'image
   const app = initializeApp(firebaseConfig);
-  const storage = getStorage();
+  const storage = getStorage(app);
 
   //State
   const [url, setUrl] = useState()
   const [flash, setFlash] = useState([]);
   const [imageRef, setImageRef] = useState()
-
+  console.log(url)
   const image = []
 
   if(product.image){
-
     getDownloadURL(ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${product.image}`))
       .then((url)=>{
           setUrl(url)
