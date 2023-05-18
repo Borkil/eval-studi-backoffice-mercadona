@@ -3,7 +3,7 @@ import Link from "next/link.js";
 import { useState } from "react";
 
 export default function Produit({ products }) {
-  const [filter, setFilter] = useState("deal");
+  const [filter, setFilter] = useState("all");
 
   const listProducts = [];
 
