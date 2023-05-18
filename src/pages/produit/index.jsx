@@ -2,7 +2,7 @@ import ListData from "@/components/general/ListData.jsx";
 import Link from "next/link.js";
 import { useState } from "react";
 
-export default function produit({ products }) {
+export default function Produit({ products }) {
   const [filter, setFilter] = useState("deal");
 
   const listProducts = [];

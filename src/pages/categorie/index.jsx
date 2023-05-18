@@ -1,7 +1,7 @@
 import CategoryList from "@/components/category/CategoryList.jsx";
 import Link from "next/link.js";
 
-export default function index({ categories }) {
+export default function Index({ categories }) {
   console.log(categories);
   return (
     <section>
