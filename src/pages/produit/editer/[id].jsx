@@ -24,7 +24,7 @@ export default function EditProduct({ product, categories }) {
 
   if(product.image){
 
-    getDownloadURL(ref(storage, `images/${product.image}`))
+    getDownloadURL(ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${product.image}`))
       .then((url)=>{
           setUrl(url)
       })
@@ -51,7 +51,7 @@ export default function EditProduct({ product, categories }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const file = event.target.image.files[0]
-    const storageRef = ref(storage, `images/${file.name}`);
+    const storageRef = ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${file.name}`);
 
     const data = {
       label: event.target.label.value,
