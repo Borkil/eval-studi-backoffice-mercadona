@@ -29,7 +29,7 @@ export default function EditProduct({ product, categories }) {
           setUrl(url)
       })
   }else{
-    image.push(<p>Le produit n'a pas d'image, enregistrer en une.</p>)
+    image.push(<p>Le produit n a pas d image, enregistrer en une.</p>)
   }
   
   if(url){
