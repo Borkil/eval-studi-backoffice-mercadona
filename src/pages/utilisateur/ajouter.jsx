@@ -38,9 +38,9 @@ export default function AddUser(){
     
     const response = await fetch(endpoint, options);
     if(response.ok){
-      addFlash(<SuccessFlashMessage key='i'>L'utilisateur a été créé avec success !</SuccessFlashMessage>)
+      addFlash(<SuccessFlashMessage key='i'>L utilisateur a été créé avec success !</SuccessFlashMessage>)
     }else{
-      addFlash(<DangerFlashMessage key='i'>Il y a un probleme pour la creation de l'utilisateur</DangerFlashMessage>)
+      addFlash(<DangerFlashMessage key='i'>Il y a un probleme pour la creation de l utilisateur</DangerFlashMessage>)
     }
     
   };
