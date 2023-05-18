@@ -9,7 +9,7 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/firebase/firebase.config.js";
 
-export default function NewProduct({categories, context}) {
+export default function NewProduct({categories}) {
   const [flash, setFlash] = useState([])
   const { data: session, status } = useSession()
   const app = initializeApp(firebaseConfig);
