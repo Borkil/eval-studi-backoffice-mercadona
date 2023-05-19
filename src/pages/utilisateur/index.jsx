@@ -1,10 +1,16 @@
 import TableLigne from "@/components/table/TableLigne.jsx"
 import Link from "next/link.js"
-import { authOptions } from "../api/auth/[...nextauth].js"
-import { getServerSession } from "next-auth/next"
+import { useUsers } from "@/swr/user/useUsers.js"
 
-export default function Index({users}){
 
+
+export default function Index(){
+  const {users} = useUsers()
+
+
+  if (!users) return <div>Loading...</div>
+  
+  console.log(users)
   return(
     <section>
       <div className="flex justify-between">
@@ -24,36 +30,11 @@ export default function Index({users}){
           </tr>
         </thead>
         <tbody>
-          {users.map((user)=>(
+          {users.map((user) => (
             <TableLigne user={user} key={user.id}/>
           ))}
         </tbody>
       </table>
     </section>
   )
-}
-
-export async function getServerSideProps(context){
-  const session = await getServerSession(context.req, context.res, authOptions)
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization : `Bearer ${session.user.token} `
-    }
-  };
-  const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/user", options)
-  const users = await res.json()
-  return {
-    props : {
-      users
-    }
-  }
 }

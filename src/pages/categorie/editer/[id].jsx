@@ -8,7 +8,6 @@ export default function EditCategory({ category }) {
   const [flash, setFlash] = useState([]);
   const { data: session, status } = useSession()
   
-
   const addFlash = (message) => {
     setFlash([message]);
   };
