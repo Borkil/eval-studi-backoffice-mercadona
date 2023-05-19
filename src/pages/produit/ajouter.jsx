@@ -2,16 +2,17 @@ import InputText from "@/components/general/form/InputText.jsx";
 import InputFloat from "@/components/general/form/InputFloat.jsx";
 import InputList from "@/components/general/form/InputList.jsx";
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/firebase/firebase.config.js";
+import { useCategories } from "@/swr/category/useCategories.js";
 
-export default function NewProduct({categories}) {
+export default function NewProduct() {
+  const { categories, session } =  useCategories();
   const [flash, setFlash] = useState([])
-  const { data: session, status } = useSession()
+  if(!categories) return <div>Loading</div>
   const app = initializeApp(firebaseConfig);
   const storage = getStorage();
 
@@ -82,14 +83,4 @@ export default function NewProduct({categories}) {
   );
 }
 
-export async function getServerSideProps() {
-  const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/category");
-  const categories =  await res.json();
-
-   return {
-    props: {
-      categories,
-    }
-   }
-}
 

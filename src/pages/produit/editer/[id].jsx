@@ -21,7 +21,7 @@ export default function EditProduct() {
   
   
   //State
-  const { product } = useProduct(router.query.id);
+  const { product, session } = useProduct(router.query.id);
   const { categories } = useCategories();
   const [url, setUrl] = useState();
   const [flash, setFlash] = useState([]);
@@ -31,7 +31,6 @@ export default function EditProduct() {
    //telechargement de l'image 
   const image = [];
 
-    console.log(product)
     if(product.image){
       getDownloadURL(
         ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${product.image}`)
@@ -79,7 +78,6 @@ export default function EditProduct() {
       isArchive: false,
     };
     const JSONdata = JSON.stringify(data);
-    console.log(data, JSONdata);
 
     const endpoint = process.env.NEXT_PUBLIC_URL_API + "/product/" + product.id;
 
@@ -96,7 +94,7 @@ export default function EditProduct() {
       uploadBytes(storageRef, file).then((snapshot) => {
         addFlash(
           <SuccessFlashMessage key="i">
-            Le produit a été créer avec succes !
+            Le produit a été mis a jour avec succes !
           </SuccessFlashMessage>
         );
       });
