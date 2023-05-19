@@ -6,11 +6,8 @@ import { useUsers } from "@/swr/user/useUsers.js"
 
 export default function Index(){
   const {users} = useUsers();
-
-
   if (!users) return <div>Loading...</div>
   
-  console.log(users)
   return(
     <section>
       <div className="flex justify-between">

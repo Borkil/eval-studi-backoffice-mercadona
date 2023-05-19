@@ -17,6 +17,9 @@ export default function Header() {
           <li>
             <Link href="/categorie">Categorie</Link>
           </li>
+          <li>
+            <Link href="/utilisateur">Utilisateur</Link>
+          </li>
         </ul>
       </nav>
     </header>
