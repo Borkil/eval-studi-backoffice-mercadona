@@ -1,8 +1,12 @@
 import CategoryList from "@/components/category/CategoryList.jsx";
 import Link from "next/link.js";
+import { useCategories } from "@/swr/category/useCategories.js";
 
-export default function Index({ categories }) {
-  console.log(categories);
+export default function Index() {
+  const {categories} = useCategories()
+  
+  if (!categories) return <div>Loading..!</div>
+
   return (
     <section>
       <div className="flex justify-between">
@@ -17,15 +21,4 @@ export default function Index({ categories }) {
       <CategoryList categories={categories} />
     </section>
   );
-}
-
-export async function getServerSideProps() {
-  const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/category");
-  const categories = await res.json();
-
-  return {
-    props: {
-      categories: categories,
-    },
-  };
 }

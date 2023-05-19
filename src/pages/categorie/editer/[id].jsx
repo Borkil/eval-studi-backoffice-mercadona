@@ -3,10 +3,16 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
+import { useRouter } from "next/router.js";
+import { useCategory } from "@/swr/category/useCategory.js";
 
-export default function EditCategory({ category }) {
+export default function EditCategory() {
+  const router = useRouter();
+  const {category} = useCategory(router.query.id)
   const [flash, setFlash] = useState([]);
   const { data: session, status } = useSession()
+
+  if(!category) return <div>Loading...!</div>
   
   const addFlash = (message) => {
     setFlash([message]);
@@ -57,14 +63,4 @@ export default function EditCategory({ category }) {
       </form>
     </section>
   );
-}
-
-export async function getServerSideProps({ params }) {
-  const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/category/" + params.id);
-  const category = await res.json();
-  return {
-    props: {
-      category,
-    },
-  };
 }

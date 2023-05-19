@@ -1,14 +1,15 @@
 import ListData from "@/components/general/ListData.jsx";
+import { useProducts } from "@/swr/product/useProducts.js";
 import Link from "next/link.js";
 import { useState } from "react";
-import { authOptions } from "../api/auth/[...nextauth].js"
-import { getServerSession } from "next-auth/next"
 
-export default function Produit({ products }) {
+export default function Produit() {
+  const {products} = useProducts();
   const [filter, setFilter] = useState("all");
-
+  
+  if (!products) return <div>Loading..!</div>
+  
   const listProducts = [];
-
   products.forEach((product) => {
     if (filter === "all") {
       listProducts.push(product);
@@ -49,29 +50,4 @@ export default function Produit({ products }) {
       </main>
     </>
   );
-}
-
-export async function getServerSideProps(context) {
-  const session = await getServerSession(context.req, context.res, authOptions)
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization : `Bearer ${session.user.token} `
-    }
-  };
-  const res = await fetch(process.env.NEXT_PUBLIC_URL_API + "/product", options);
-  const products = await res.json();
-  return {
-    props: {
-      products,
-    },
-  };
 }

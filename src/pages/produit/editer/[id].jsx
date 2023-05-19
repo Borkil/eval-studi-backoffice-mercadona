@@ -9,39 +9,53 @@ import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/firebase/firebase.config.js";
 import Image from "next/image.js";
+import { useRouter } from "next/router.js";
+import { useProduct } from "@/swr/product/useProduct.js";
+import { useCategories } from "@/swr/category/useCategories.js";
 
-export default function EditProduct({ product, categories }) {
+export default function EditProduct() {
   // Récuperation de l'image
   const app = initializeApp(firebaseConfig);
   const storage = getStorage();
-
+  const router = useRouter();
+  
+  
   //State
-  const [url, setUrl] = useState()
+  const { product } = useProduct(router.query.id);
+  const { categories } = useCategories();
+  const [url, setUrl] = useState();
   const [flash, setFlash] = useState([]);
-  const [imageRef, setImageRef] = useState()
 
-  const image = []
+  if(!product || !categories)return <div>Loading</div>
 
-  if(product.image){
-    getDownloadURL(ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${product.image}`))
-      .then((url)=>{
-          setUrl(url)
-      })
-  }else{
-    image.push(<p>Le produit n a pas d image, enregistrer en une.</p>)
+   //telechargement de l'image 
+  const image = [];
+
+    console.log(product)
+    if(product.image){
+      getDownloadURL(
+        ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${product.image}`)
+      ).then((url) => {
+        setUrl(url);
+      });
+    }else {
+      image.push(<p>Le produit n a pas d image, enregistrer en une.</p>);
+    }
+
+  if (url) {
+    image.push(
+      <Image
+        src={url}
+        width={100}
+        height={100}
+        alt="product pictures"
+        key="image1"
+        priority
+      />
+    );
   }
-  
-  if(url){
-    image.push(<Image src={url} width={100} height={100} alt="product pictures" key='image1' priority/>)
-  }
-  
-
-
-  // Récuperation de la session
-  const { data: session, status } = useSession()
   
   // Gestion des messages Flash
-  
   const addFlash = (message) => {
     setFlash([message]);
   };
@@ -49,8 +63,11 @@ export default function EditProduct({ product, categories }) {
   // submit le formulaire
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const file = event.target.image.files[0]
-    const storageRef = ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${file.name}`);
+    const file = event.target.image.files[0];
+    const storageRef = ref(
+      storage,
+      `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${file.name}`
+    );
 
     const data = {
       label: event.target.label.value,
@@ -70,14 +87,18 @@ export default function EditProduct({ product, categories }) {
       method: "PUT",
       body: JSONdata,
       headers: {
-        Authorization : `Bearer ${session.user.token} `
-      }
+        Authorization: `Bearer ${session.user.token} `,
+      },
     };
 
     const response = await fetch(endpoint, options);
     if (response.ok) {
       uploadBytes(storageRef, file).then((snapshot) => {
-        addFlash(<SuccessFlashMessage key='i'>Le produit a été créer avec succes !</SuccessFlashMessage>)
+        addFlash(
+          <SuccessFlashMessage key="i">
+            Le produit a été créer avec succes !
+          </SuccessFlashMessage>
+        );
       });
     } else {
       addFlash(
@@ -121,17 +142,4 @@ export default function EditProduct({ product, categories }) {
       </form>
     </section>
   );
-}
-
-export async function getServerSideProps({ params }) {
-  const res1 = await fetch(process.env.NEXT_PUBLIC_URL_API + "/product/" + params.id);
-  const res2 = await fetch(process.env.NEXT_PUBLIC_URL_API + "/category");
-  const product = await res1.json();
-  const categories = await res2.json();
-  return {
-    props: {
-      product,
-      categories,
-    },
-  };
 }

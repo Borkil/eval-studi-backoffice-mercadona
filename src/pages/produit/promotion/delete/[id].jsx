@@ -1,16 +1,24 @@
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useRouter } from 'next/router';
+import { useProduct } from "@/swr/product/useProduct.js";
+import { useEffect, useState } from 'react';
 
-export default function DeleteDeal({ product }) {
+
+export default function DeleteDeal() {
   const router = useRouter();
-  const { data: session, status } = useSession()
+  const {product, session } = useProduct(router.query.id)
+  const [response, setResponse] = useState(false)
+  useEffect(()=> {
+    if(response){
+      router.push('/produit')
+    }
+  })
 
   const handleSubmit = async () => {
-
     const data = {
       label: product.label,
       description : product.description,
       price: product.price,
+      image: product.image,
       category: product.category,
       finishDealAt: null,
       percentage: null,
@@ -31,22 +39,13 @@ export default function DeleteDeal({ product }) {
     };
 
     const response = await fetch(endpoint, options);
-
     if(response.ok){
-      router.push('/produit')
+      setResponse(true)
     }
   };
-
-  handleSubmit()
+  
+  if(product){
+    handleSubmit()
+  }else{return null}
 }
 
-
-export async function getServerSideProps({ params }) {
-  const res1 = await fetch(process.env.NEXT_PUBLIC_URL_API + "/product/" + params.id);
-  const product = await res1.json();
-  return {
-    props: {
-      product,
-    },
-  };
-}

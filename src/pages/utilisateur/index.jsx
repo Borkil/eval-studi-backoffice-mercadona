@@ -5,7 +5,7 @@ import { useUsers } from "@/swr/user/useUsers.js"
 
 
 export default function Index(){
-  const {users} = useUsers()
+  const {users} = useUsers();
 
 
   if (!users) return <div>Loading...</div>
