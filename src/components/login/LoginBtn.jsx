@@ -1,20 +1,19 @@
 import { useSession, signIn, signOut } from "next-auth/react"
 
 
+
 export default function LoginBtn() {
   const { data: session } = useSession()
   if (session) {
     return (
       <>
-        Signed in as {session.user.username} <br />
-        <button onClick={() => signOut()} className='border-2 bg-neutral-200 text-xl border-neutral-900'>Sign out</button>
+        <button onClick={() => signOut()} className='px-2 border-2 rounded-md bg-neutral-200 border-neutral-700'>Déconnexion</button>
       </>
     )
   }
   return (
     <>
-      Not signed in <br />
-      <button onClick={() => signIn()} className='border-2 bg-neutral-200 text-xl border-neutral-900'>Sign in</button>
+      <button onClick={() => signIn()} className='px-2 border-2 rounded-md bg-green-200 border-green-700'>Connexion</button>
     </>
   )
 }
