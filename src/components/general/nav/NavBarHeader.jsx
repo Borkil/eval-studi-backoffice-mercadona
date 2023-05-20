@@ -1,7 +1,7 @@
 import NavBrand from "./NavBrand.jsx"
 import NavItem from "./NavItem.jsx"
 
-export default function(){
+export default function NavBarHeader(){
   return(
     <nav>
       <ul className="flex items-center">
