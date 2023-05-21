@@ -1,5 +1,5 @@
-export default function Price({children}){
+export default function Price({children, addClass}){
   return(
-    <div>{children} €</div>
+    <div className={`me-2 ${addClass}`}>{children} €</div>
   )
 }

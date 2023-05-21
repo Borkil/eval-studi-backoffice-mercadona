@@ -1,5 +1,5 @@
 export default function Percentage({children}){
   return (
-    <div>{children} pourcent</div>
+    <div className='me-2'> - {children} pourcent</div>
   )
 }

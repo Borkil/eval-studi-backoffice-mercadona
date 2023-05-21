@@ -1,4 +1,4 @@
-import Layout from '@/layout/Layout.jsx'
+import Layout from '@/components/general/layout/Layout.jsx'
 import '@/styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
 

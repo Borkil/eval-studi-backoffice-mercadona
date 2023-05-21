@@ -3,8 +3,12 @@ import Header from "@/components/general/Header.jsx";
 export default function Layout({ children }) {
   return (
     <>
-      <Header/>
-      <main>{children}</main>
+      <div>
+        <div className="container">
+          <Header/>
+          {children}
+        </div>
+      </div>
     </>
   );
 }

@@ -12,9 +12,7 @@ export default function Home() {
   const { data: session } = useSession()
   return ( 
     <main className={`flex min-h-screen flex-col ${poppins.className}`}>
-      <section>
         {!session ? <LoginForm  /> : <p>Bienvenue</p>}
-      </section>
     </main>
   )
 }

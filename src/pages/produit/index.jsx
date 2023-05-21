@@ -1,14 +1,18 @@
 import ListData from "@/components/general/ListData.jsx";
 import { useProducts } from "@/swr/product/useProducts.js";
-import Link from "next/link.js";
 import { useState } from "react";
+import { SectionHeader } from "@/components/general/section/SectionHeader.jsx";
+import SectionLayout from "@/components/general/section/SectionLayout.jsx";
+import FilterButton from "@/components/general/button/FilterButton.jsx";
+
 
 export default function Produit() {
-  const {products} = useProducts();
+  const { products } = useProducts();
   const [filter, setFilter] = useState("all");
-  
-  if (!products) return <div>Loading..!</div>
-  
+ 
+
+  if (!products) return <div>Loading..!</div>;
+
   const listProducts = [];
   products.forEach((product) => {
     if (filter === "all") {
@@ -28,26 +32,16 @@ export default function Produit() {
 
   return (
     <>
-      <main>
-        <section>
-          <div className="flex justify-between">
-            <h2 className="font-bold text-3xl">Gestion des produits</h2>
-            <Link
-              href="/produit/ajouter"
-              className="bg-green-600 text-white text-sm rounded self-center px-3 py-1"
-            >
-              Ajouter
-            </Link>
-          </div>
-          <div>
-            <button onClick={() => setFilter("all")}>Tous</button>
-            <button onClick={() => setFilter("sale")}>En vente</button>
-            <button onClick={() => setFilter("deal")}>Promo</button>
-            <button onClick={() => setFilter("archive")}>Archive</button>
-          </div>
-          <ListData products={listProducts} />
-        </section>
-      </main>
+      <SectionLayout>
+        <SectionHeader title={'Gestion des produits'} href={"/produit/ajouter"} />
+        <div className="my-4 ">
+          <FilterButton onClick={() => setFilter("all")}>Tous</FilterButton>
+          <FilterButton onClick={() => setFilter("sale")}>En vente</FilterButton>
+          <FilterButton onClick={() => setFilter("deal")}>Promo</FilterButton>
+          <FilterButton onClick={() => setFilter("archive")}>Archive</FilterButton>
+        </div>
+        <ListData products={listProducts} />
+      </SectionLayout>
     </>
   );
 }
