@@ -1,6 +1,3 @@
-import InputText from "@/components/general/form/InputText.jsx";
-import InputFloat from "@/components/general/form/InputFloat.jsx";
-import InputList from "@/components/general/form/InputList.jsx";
 import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
@@ -8,6 +5,10 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/firebase/firebase.config.js";
 import { useCategories } from "@/swr/category/useCategories.js";
+import SectionLayout from "@/components/general/section/SectionLayout.jsx";
+import SectionHeaderNoButton from "@/components/general/section/SectionHeaderNoButton.jsx";
+import FormLayout from "@/components/general/form/FormLayout.jsx";
+import FormAddProduct from "@/components/general/form/FormAddProduct.jsx";
 
 export default function NewProduct() {
   const { categories, session } =  useCategories();
@@ -64,22 +65,14 @@ export default function NewProduct() {
   const categoryList = []
   categories.forEach((element) => categoryList.push(element.label))
 
-
-
   return (
-    <section>
-      <h1>Ajouter un nouveau produit</h1>
+    <SectionLayout>
+      <SectionHeaderNoButton title={'Ajouter un nouveau produit'} />
       {flash}
-      <form onSubmit={handleSubmit}>
-        <InputText name="label">Label du produit</InputText>
-        <InputText name="description">Description du produit</InputText>
-        <InputFloat name="price">Prix</InputFloat>
-        <InputList name='category' list={categoryList} >Choisir une catégorie</InputList>
-        <input type="file" name="image" id="imageFile" />
-        <button type="submit">Submit</button>
-      </form>
-
-    </section>
+      <FormLayout>
+        <FormAddProduct onSubmit={handleSubmit} categoryList={categoryList} />
+      </FormLayout>
+    </SectionLayout>
   );
 }
 

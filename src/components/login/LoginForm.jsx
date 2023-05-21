@@ -1,6 +1,7 @@
 import { signIn } from "next-auth/react";
 import InputPassword from "../general/form/InputPassword.jsx";
 import InputEmail from "../general/form/InputEmail.jsx";
+import SubmitButton from "../general/button/SubmitButton.jsx";
 
 export default function LoginForm() {
   const handleSubmit = async (e) => {
@@ -54,12 +55,7 @@ export default function LoginForm() {
             </div>
 
             <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Connexion
-              </button>
+              <SubmitButton>Connexion</SubmitButton>
             </div>
           </form>
         </div>
