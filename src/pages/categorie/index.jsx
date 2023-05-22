@@ -1,5 +1,6 @@
 import CategoryList from "@/components/category/CategoryList.jsx";
-import Link from "next/link.js";
+import SectionLayout from "@/components/general/section/SectionLayout.jsx";
+import { SectionHeader } from "@/components/general/section/SectionHeader.jsx";
 import { useCategories } from "@/swr/category/useCategories.js";
 
 export default function Index() {
@@ -8,17 +9,9 @@ export default function Index() {
   if (!categories) return <div>Loading..!</div>
 
   return (
-    <section>
-      <div className="flex justify-between">
-        <h2 className="font-bold text-3xl">Gestion des catégories</h2>
-        <Link
-          href="/categorie/ajouter"
-          className="bg-green-600 text-white text-sm rounded self-center px-3 py-1"
-        >
-          Ajouter
-        </Link>
-      </div>
+    <SectionLayout>
+      <SectionHeader title={'Gestion des catégories'} href={'/categorie/ajouter'}/>
       <CategoryList categories={categories} />
-    </section>
+    </SectionLayout>
   );
 }

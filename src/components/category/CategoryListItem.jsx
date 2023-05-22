@@ -1,12 +1,13 @@
-import Link from "next/link.js"
+import Link from "next/link.js";
+import ActionButton from "../general/button/ActionButton.jsx";
 
-export default function CategoryListItem({category}){
-  return(
-    <div>
-      <div className="bg-neutral-200 text-neutral-900 text-xl text-bold">{category.label}</div>
-      <div>
-        <Link href={`/categorie/editer/${category.id}`} >Editer</Link>
+export default function CategoryListItem({ category }) {
+  return (
+    <div className="flex justify-between p-2 items-center">
+      <div className="text-gray-900 text-xl text-bold">
+        {category.label}
       </div>
+      <ActionButton href={`/categorie/editer/${category.id}`} color={'bg-neutral-300'} >Editer</ActionButton>
     </div>
-  )
+  );
 }

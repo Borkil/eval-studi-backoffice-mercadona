@@ -1,8 +1,11 @@
-import InputText from "@/components/general/form/InputText.jsx";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
+import SectionHeaderNoButton from "@/components/general/section/SectionHeaderNoButton.jsx";
+import SectionLayout from "@/components/general/section/SectionLayout.jsx";
+import FormCategory from "@/components/general/form/FormCategory.jsx";
+
 
 export default function AddCategory() {
   const [flash, setFlash] = useState([]);
@@ -46,13 +49,10 @@ export default function AddCategory() {
   };
 
   return (
-    <section>
-      <h1>Ajouter une nouvelle catégorie</h1>
+    <SectionLayout>
+      <SectionHeaderNoButton title={'Ajouter une nouvelle catégorie'}/>
       {flash}
-      <form onSubmit={handleSubmit}>
-        <InputText name="label">Label de la catégorie</InputText>
-        <input type="submit" value="Ajouter" />
-      </form>
-    </section>
+      <FormCategory onSubmit={handleSubmit}/>
+    </SectionLayout>
   );
 }

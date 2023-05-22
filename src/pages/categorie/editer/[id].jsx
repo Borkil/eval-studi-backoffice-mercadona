@@ -1,10 +1,12 @@
-import InputText from "@/components/general/form/InputText.jsx";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 import { useRouter } from "next/router.js";
 import { useCategory } from "@/swr/category/useCategory.js";
+import SectionHeaderNoButton from "@/components/general/section/SectionHeaderNoButton.jsx";
+import SectionLayout from "@/components/general/section/SectionLayout.jsx";
+import FormCategory from "@/components/general/form/FormCategory.jsx";
 
 export default function EditCategory() {
   const router = useRouter();
@@ -52,15 +54,10 @@ export default function EditCategory() {
   };
 
   return (
-    <section>
-      <h1>Mettre a jour la catégorie</h1>
+    <SectionLayout>
+      <SectionHeaderNoButton title={'Modifier une categorie'}/>
       {flash}
-      <form onSubmit={handleSubmit}>
-        <InputText name="label" value={category.label} required={true}>
-          Label de la catégorie
-        </InputText>
-        <input type="submit" value="Ajouter" />
-      </form>
-    </section>
+      <FormCategory onSubmit={handleSubmit} category={category.label}/>
+    </SectionLayout>
   );
 }
