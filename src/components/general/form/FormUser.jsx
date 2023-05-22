@@ -3,10 +3,11 @@ import FormLayout from "./FormLayout.jsx";
 import InputText from "./InputText.jsx";
 
 export default function FormUser({onSubmit, user}){
+  const email = user? user.email : null
   return(
     <FormLayout>
       <form onSubmit={onSubmit}>
-        <InputText name="email" value={user.email}>Email</InputText>
+        <InputText name="email" value={email}>Email</InputText>
         <InputText name="password">Mot de passe</InputText>
         <fieldset>
           <legend>Choisir un role</legend>
