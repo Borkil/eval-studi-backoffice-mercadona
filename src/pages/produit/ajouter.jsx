@@ -69,9 +69,7 @@ export default function NewProduct() {
     <SectionLayout>
       <SectionHeaderNoButton title={'Ajouter un nouveau produit'} />
       {flash}
-      <FormLayout>
-        <FormAddProduct onSubmit={handleSubmit} categoryList={categoryList} />
-      </FormLayout>
+      <FormAddProduct onSubmit={handleSubmit} categoryList={categoryList} />
     </SectionLayout>
   );
 }

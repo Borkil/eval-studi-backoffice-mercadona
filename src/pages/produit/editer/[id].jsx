@@ -1,7 +1,3 @@
-import InputText from "@/components/general/form/InputText.jsx";
-import InputFloat from "@/components/general/form/InputFloat.jsx";
-import InputList from "@/components/general/form/InputList.jsx";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
@@ -12,34 +8,36 @@ import Image from "next/image.js";
 import { useRouter } from "next/router.js";
 import { useProduct } from "@/swr/product/useProduct.js";
 import { useCategories } from "@/swr/category/useCategories.js";
+import SectionLayout from "@/components/general/section/SectionLayout.jsx";
+import SectionHeaderNoButton from "@/components/general/section/SectionHeaderNoButton.jsx";
+import FormEditProduct from "@/components/general/form/FormEditProduct.jsx";
 
 export default function EditProduct() {
   // Récuperation de l'image
   const app = initializeApp(firebaseConfig);
   const storage = getStorage();
   const router = useRouter();
-  
-  
+
   //State
   const { product, session } = useProduct(router.query.id);
   const { categories } = useCategories();
   const [url, setUrl] = useState();
   const [flash, setFlash] = useState([]);
 
-  if(!product || !categories)return <div>Loading</div>
+  if (!product || !categories) return <div>Loading</div>;
 
-   //telechargement de l'image 
+  //telechargement de l'image
   const image = [];
 
-    if(product.image){
-      getDownloadURL(
-        ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${product.image}`)
-      ).then((url) => {
-        setUrl(url);
-      });
-    }else {
-      image.push(<p>Le produit n a pas d image, enregistrer en une.</p>);
-    }
+  if (product.image) {
+    getDownloadURL(
+      ref(storage, `${process.env.NEXT_PUBLIC_FIREBASE_PATH}${product.image}`)
+    ).then((url) => {
+      setUrl(url);
+    });
+  } else {
+    image.push(<p>Le produit n a pas d image, enregistrer en une.</p>);
+  }
 
   if (url) {
     image.push(
@@ -53,7 +51,7 @@ export default function EditProduct() {
       />
     );
   }
-  
+
   // Gestion des messages Flash
   const addFlash = (message) => {
     setFlash([message]);
@@ -112,32 +110,16 @@ export default function EditProduct() {
   categories.forEach((element) => categoryList.push(element.label));
 
   return (
-    <section>
-      <h1>Ajouter un nouveau produit</h1>
+    <SectionLayout>
+      <SectionHeaderNoButton title={"Editer un produit"} />
       {flash}
-      {image}
-      <form onSubmit={handleSubmit}>
-        <InputText name="label" value={product.label}>
-          Label du produit
-        </InputText>
-        <InputText name="description" value={product.description}>
-          Description du produit
-        </InputText>
-        <InputFloat name="price" value={product.price}>
-          Prix
-        </InputFloat>
-        <InputList
-          name="category"
-          list={categoryList}
-          value={product.category.label}
-        >
-          Choisir une catégorie
-        </InputList>
+      <div className="flex justify-center">{image}</div>
 
-        <input type="file" name="image" id="inputImage" />
-
-        <button type="submit">Submit</button>
-      </form>
-    </section>
+      <FormEditProduct
+        onSubmit={handleSubmit}
+        categoryList={categoryList}
+        product={product}
+      />
+    </SectionLayout>
   );
 }
