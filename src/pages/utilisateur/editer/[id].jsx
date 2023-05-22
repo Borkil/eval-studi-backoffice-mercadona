@@ -1,10 +1,11 @@
-import InputText from "@/components/general/form/InputText.jsx";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
 import { useRouter } from "next/router.js";
 import { useUser } from "@/swr/user/useUser.js";
+import SectionLayout from "@/components/general/section/SectionLayout.jsx";
+import SectionHeaderNoButton from "@/components/general/section/SectionHeaderNoButton.jsx";
+import FormUser from "@/components/general/form/FormUser.jsx";
 
 
 export default function EditUser() {
@@ -57,30 +58,10 @@ export default function EditUser() {
   };
 
   return (
-    <section>
-      <h2>Editer un utilisateur</h2>
+    <SectionLayout>
+      <SectionHeaderNoButton title={'Modifier un utilisateur'}/>
       {flash}
-      <form onSubmit={handleSubmit}>
-        <InputText name="email" value={user.email} required={true}>
-          Email
-        </InputText>
-        <InputText name="password" required={true}>
-          Mot de passe
-        </InputText>
-        <fieldset>
-          <legend>Choisir un role</legend>
-        </fieldset>
-        <div>
-          <input type="radio" id="user" name="roles" value="ROLE_USER" />
-          <label htmlFor="user">Simple utilisateur</label>
-        </div>
-        <div>
-          <input type="radio" id="admin" name="roles" value="ROLE_ADMIN" />
-          <label htmlFor="admin">Administrateur</label>
-        </div>
-
-        <button type="submit">Submit</button>
-      </form>
-    </section>
+      <FormUser onSubmit={handleSubmit} user={user}/>
+    </SectionLayout>
   );
 }

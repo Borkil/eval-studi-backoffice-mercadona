@@ -1,8 +1,11 @@
-import InputText from "@/components/general/form/InputText.jsx";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import SuccessFlashMessage from "@/components/general/flash/SuccessFlashMessage.jsx";
 import DangerFlashMessage from "@/components/general/flash/DangerFlashMessage.jsx";
+import SectionLayout from "@/components/general/section/SectionLayout.jsx";
+import SectionHeaderNoButton from "@/components/general/section/SectionHeaderNoButton.jsx";
+import FormUser from "@/components/general/form/FormUser.jsx";
+
 
 
 export default function AddUser(){
@@ -22,8 +25,6 @@ export default function AddUser(){
       password: event.target.password.value,
       roles: [event.target.roles.value],
     };
-
-    console.log(data)
 
     const JSONdata = JSON.stringify(data);
     const endpoint = process.env.NEXT_PUBLIC_URL_API + "/user"
@@ -47,29 +48,10 @@ export default function AddUser(){
 
 
   return(
-    <section>
-      <section>
-      <h1>Ajouter un utilisateur</h1>
+    <SectionLayout>
+      <SectionHeaderNoButton title={'Ajouter un utilisateur'}/>
       {flash}
-      <form onSubmit={handleSubmit}>
-        <InputText name="email">Email</InputText>
-        <InputText name="password">Mot de passe</InputText>
-        <fieldset>
-          <legend>Choisir un role</legend>
-        </fieldset>
-        <div>
-          <input type="radio" id="user" name="roles" value="ROLE_USER" />
-          <label htmlFor="user">Simple utilisateur</label>
-        </div>
-        <div>
-          <input type="radio" id="admin" name="roles" value="ROLE_ADMIN" />
-          <label htmlFor="admin">Administrateur</label>
-        </div>
-
-        <button type="submit">Submit</button>
-      </form>
-
-    </section>
-    </section>
+      <FormUser onSubmit={handleSubmit} />
+    </SectionLayout>
   )
 }
